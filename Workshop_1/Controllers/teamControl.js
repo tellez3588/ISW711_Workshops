@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Team = require('../Models/teamModel');
 
+
 //Post to create a new team
-router.post('/team', (req, res) => {
-    const newTeam = new Team(req.body);
+router.post('/teams', (req, res) => {
+
+    const newTeam = new Team.model(req.body);
     newTeam.save((error) => {
         if (error) {
             return res.status(500).send(error);
@@ -14,8 +16,8 @@ router.post('/team', (req, res) => {
 });
 
 //Get all teams 
-router.get('/team', (req, res) => {
-    Team.find({}, (error, teams) => {
+router.get('/teams', (req, res) => {
+    Team.model.find({}, (error, teams) => {
         if (error) {
             return res.status(500).send(error);
         }
@@ -23,22 +25,22 @@ router.get('/team', (req, res) => {
     });
 });
 
-router.get('/team:id', (req, res) => {
-    Team.findById(req.params.id, (error, team) => {
+router.get('/teams/:id', (req, res) => {
+    Team.model.findById(req.params.id, (error, teams) => {
         if (error) {
             return res.status(500).send(error);
         }
-        if (!team) {
+        if (!teams) {
             return res.status(404).send('Team not found');
         }
-        res.status(200).json(team);
+        res.status(200).json(teams);
     });
 });
 
 
 //update team
-router.put('/team:id', (req, res) => {
-    Team.findByIdAndUpdate(req.params.id, req.body, {new: true}, (error, team) => {
+router.put('/teams/:id', (req, res) => {
+    Team.model.findByIdAndUpdate(req.params.id, req.body, {new: true}, (error, team) => {
         if (error) {
             return res.status(500).send(error);
         }
@@ -50,8 +52,8 @@ router.put('/team:id', (req, res) => {
 });
 
 //delete team
-router.delete('/team:id', (req, res) => {
-    Team.findByIdAndRemove(req.params.id, (error, team) => {
+router.delete('/teams/:id', (req, res) => {
+    Team.model.findByIdAndRemove(req.params.id, (error, team) => {
         if (error) {
             return res.status(500).send(error);
         }
@@ -63,4 +65,4 @@ router.delete('/team:id', (req, res) => {
 });
 
 
-module.exports=router;
+module.exports = router;
